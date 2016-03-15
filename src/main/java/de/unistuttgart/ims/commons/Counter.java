@@ -10,25 +10,49 @@ import java.util.Set;
 
 import org.apache.commons.math3.util.Pair;
 
+/**
+ * This class counts things, based on a HashMap with an Integer value.
+ *
+ * @author reiterns
+ *
+ * @param <K>
+ *            The class we want to count
+ */
 public class Counter<K> extends HashMap<K, Integer> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-	public Counter() {}
+	public Counter() {
+	}
 
+	/**
+	 * Copy constructor
+	 *
+	 * @param c
+	 */
 	public Counter(final Counter<K> c) {
-		for (K k : c.keySet()) {
-			this.put(k, c.get(k));
+		for (final K k : c.keySet()) {
+			put(k, c.get(k));
 		}
 	}
 
+	/**
+	 * Increases the value of k by 1. If k was not in the map before, it will be
+	 * afterwards.
+	 *
+	 * @param k
+	 *            the object we count
+	 */
 	public void add(final K k) {
 		this.add(k, 1);
 	}
 
+	/**
+	 * Increases the value of k by i. Adds k to the map if necessary.
+	 *
+	 * @param k
+	 * @param i
+	 */
 	public void add(final K k, final int i) {
 		if (!super.containsKey(k)) {
 			super.put(k, i);
@@ -45,24 +69,39 @@ public class Counter<K> extends HashMap<K, Integer> {
 		}
 	}
 
+	/**
+	 * Increases the value of <i>all</i> elements in arg by 1.
+	 *
+	 * @param arg
+	 */
 	public void addAll(final Collection<? extends K> arg) {
-		for (K k : arg) {
+		for (final K k : arg) {
 			this.add(k);
 		}
 	}
 
+	/**
+	 * Decreases the value of <i>all</i> elements in arg by 1.
+	 *
+	 * @param arg
+	 */
 	public void subtractAll(final Collection<? extends K> arg) {
-		for (K k : arg) {
+		for (final K k : arg) {
 			this.subtract(k);
 		}
 	}
 
+	/**
+	 * Returns a pair with the maximal value and all elements that have it.
+	 *
+	 * @return
+	 */
 	public Pair<Integer, Set<K>> getMax() {
-		HashSet<K> set = new HashSet<K>();
+		final HashSet<K> set = new HashSet<K>();
 
 		int r = Integer.MIN_VALUE;
-		for (K k : this.keySet()) {
-			int i = this.get(k);
+		for (final K k : keySet()) {
+			final int i = this.get(k);
 			if (i > r) {
 				set.clear();
 				set.add(k);
@@ -75,12 +114,17 @@ public class Counter<K> extends HashMap<K, Integer> {
 		return new Pair<Integer, Set<K>>(r, set);
 	}
 
+	/**
+	 * Returns a pair with the maximal value and all elements that have it.
+	 *
+	 * @return
+	 */
 	public Pair<Integer, Set<K>> getMin() {
-		HashSet<K> set = new HashSet<K>();
+		final HashSet<K> set = new HashSet<K>();
 
 		int r = Integer.MAX_VALUE;
-		for (K k : this.keySet()) {
-			int i = this.get(k);
+		for (final K k : keySet()) {
+			final int i = this.get(k);
 			if (i < r) {
 				set.clear();
 				set.add(k);
@@ -93,7 +137,12 @@ public class Counter<K> extends HashMap<K, Integer> {
 		return new Pair<Integer, Set<K>>(r, set);
 	}
 
+	/**
+	 * Returns the maximal number
+	 *
+	 */
 	public int getHighestCount() {
+		// TODO: make faster
 		return this.getMax().getFirst();
 	}
 
@@ -109,14 +158,24 @@ public class Counter<K> extends HashMap<K, Integer> {
 		return 0;
 	}
 
+	/**
+	 * A static function that creates a Counter<String> object from a stream.
+	 * The function assumes that string and count are separated by a tab
+	 * character.
+	 *
+	 * @param r
+	 *            The reader object from which we read.
+	 * @return A new Counter object.
+	 * @throws IOException
+	 */
 	public static Counter<String> fromString(Reader r) throws IOException {
-		Counter<String> c = new Counter<String>();
+		final Counter<String> c = new Counter<String>();
 
-		BufferedReader buf = new BufferedReader(r);
+		final BufferedReader buf = new BufferedReader(r);
 		String l;
 		while ((l = buf.readLine()) != null) {
 			if (l != null) {
-				String[] line = l.split("\t");
+				final String[] line = l.split("\t");
 				c.add(line[0], Integer.valueOf(line[1]));
 			}
 		}
