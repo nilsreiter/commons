@@ -29,6 +29,7 @@ public class Counter<K> extends HashMap<K, Integer> {
 	 * Copy constructor
 	 *
 	 * @param c
+	 *            A counter object to copy from
 	 */
 	public Counter(final Counter<K> c) {
 		for (final K k : c.keySet()) {
@@ -51,7 +52,9 @@ public class Counter<K> extends HashMap<K, Integer> {
 	 * Increases the value of k by i. Adds k to the map if necessary.
 	 *
 	 * @param k
+	 *            The countee
 	 * @param i
+	 *            The amount
 	 */
 	public void add(final K k, final int i) {
 		if (!super.containsKey(k)) {
@@ -61,6 +64,12 @@ public class Counter<K> extends HashMap<K, Integer> {
 		}
 	}
 
+	/**
+	 * Decreases the value of k by 1.
+	 *
+	 * @param k
+	 *            the countee
+	 */
 	public void subtract(final K k) {
 		if (!super.containsKey(k)) {
 			super.put(k, -1);
@@ -73,6 +82,7 @@ public class Counter<K> extends HashMap<K, Integer> {
 	 * Increases the value of <i>all</i> elements in arg by 1.
 	 *
 	 * @param arg
+	 *            a collection of countees
 	 */
 	public void addAll(final Collection<? extends K> arg) {
 		for (final K k : arg) {
@@ -84,6 +94,7 @@ public class Counter<K> extends HashMap<K, Integer> {
 	 * Decreases the value of <i>all</i> elements in arg by 1.
 	 *
 	 * @param arg
+	 *            a collection of countees
 	 */
 	public void subtractAll(final Collection<? extends K> arg) {
 		for (final K k : arg) {
@@ -94,7 +105,7 @@ public class Counter<K> extends HashMap<K, Integer> {
 	/**
 	 * Returns a pair with the maximal value and all elements that have it.
 	 *
-	 * @return
+	 * @return a pair
 	 */
 	public Pair<Integer, Set<K>> getMax() {
 		final HashSet<K> set = new HashSet<K>();
@@ -117,7 +128,7 @@ public class Counter<K> extends HashMap<K, Integer> {
 	/**
 	 * Returns a pair with the maximal value and all elements that have it.
 	 *
-	 * @return
+	 * @return a pair
 	 */
 	public Pair<Integer, Set<K>> getMin() {
 		final HashSet<K> set = new HashSet<K>();
@@ -146,6 +157,10 @@ public class Counter<K> extends HashMap<K, Integer> {
 		return this.getMax().getFirst();
 	}
 
+	/**
+	 *
+	 * @return a set containing all things with the maximal number
+	 */
 	public Set<K> getKeysWithMaxCount() {
 		return this.getMax().getSecond();
 	}
@@ -159,14 +174,15 @@ public class Counter<K> extends HashMap<K, Integer> {
 	}
 
 	/**
-	 * A static function that creates a Counter<String> object from a stream.
-	 * The function assumes that string and count are separated by a tab
-	 * character.
+	 * A static function that creates a <code>Counter&lt;String&gt;</code>
+	 * object from a stream. The function assumes that string and count are
+	 * separated by a tab character.
 	 *
 	 * @param r
 	 *            The reader object from which we read.
 	 * @return A new Counter object.
 	 * @throws IOException
+	 *             thrown in case of IO exceptions
 	 */
 	public static Counter<String> fromString(Reader r) throws IOException {
 		final Counter<String> c = new Counter<String>();
